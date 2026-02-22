@@ -1,77 +1,168 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Chinese School</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<title>Munilingo</title>
 
 <style>
 
 body{
-    margin:0;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
-    background:#f5f5f7;
-    color:#111;
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+  background:linear-gradient(180deg,#0f0f0f,#050505);
+  color:white;
 }
 
-.container{
-    padding:20px;
-    padding-bottom:80px;
+/* GLASS CARD */
+
+.glass{
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(20px);
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,0.1);
 }
+
+/* HEADER */
 
 .header{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    margin-bottom:20px;
+  padding:20px;
+  display:flex;
+  align-items:center;
+  gap:15px;
 }
 
 .avatar{
-    width:50px;
-    height:50px;
-    border-radius:50%;
+  width:55px;
+  height:55px;
+  border-radius:50%;
 }
 
 .name{
-    font-weight:600;
+  font-size:18px;
+  font-weight:600;
+}
+
+.sub{
+  font-size:13px;
+  color:#aaa;
+}
+
+/* ACTION BUTTONS */
+
+.actions{
+  display:flex;
+  gap:10px;
+  padding:0 15px 10px 15px;
+}
+
+.action{
+  flex:1;
+  padding:18px;
+  text-align:center;
+  font-size:22px;
+  transition:0.3s;
+}
+
+.action:active{
+  transform:scale(0.92);
+}
+
+/* COURSES */
+
+.grid{
+  padding:15px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
 }
 
 .card{
-    background:white;
-    border-radius:16px;
-    padding:16px;
-    margin-bottom:12px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+  position:relative;
+  border-radius:20px;
+  overflow:hidden;
+  height:190px;
+  transition:0.3s;
 }
 
-.button{
-    background:black;
-    color:white;
-    padding:14px;
-    border:none;
-    border-radius:12px;
-    width:100%;
-    font-size:15px;
-    margin-top:10px;
+.card:active{
+  transform:scale(0.95);
 }
+
+.card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,0.8),transparent);
+}
+
+.title{
+  position:absolute;
+  bottom:15px;
+  left:15px;
+  z-index:2;
+  font-weight:600;
+}
+
+/* PAGE */
+
+.page{
+  display:none;
+  padding:20px;
+}
+
+.page.active{
+  display:block;
+}
+
+/* BUTTON */
+
+.btn{
+  margin-top:15px;
+  padding:15px;
+  text-align:center;
+  border-radius:14px;
+  background:#ffd400;
+  color:black;
+  font-weight:600;
+}
+
+/* BOTTOM NAV */
 
 .nav{
-    position:fixed;
-    bottom:0;
-    left:0;
-    right:0;
-    background:white;
-    border-top:1px solid #eee;
-    display:flex;
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#0b0b0b;
+  border-top:1px solid #222;
+  display:flex;
+  justify-content:space-around;
+  padding:12px 0;
 }
 
-.nav button{
-    flex:1;
-    padding:14px;
-    border:none;
-    background:none;
-    font-size:14px;
+.nav div{
+  text-align:center;
+  font-size:12px;
+  color:#777;
+}
+
+.nav span{
+  display:block;
+  font-size:22px;
+}
+
+.nav .active{
+  color:#ffd400;
 }
 
 </style>
@@ -79,26 +170,94 @@ body{
 
 <body>
 
-<div class="container">
+<!-- HOME PAGE -->
+
+<div id="home" class="page active">
 
 <div class="header">
-    <img id="avatar" class="avatar">
-    <div>
-        <div id="name" class="name">Загрузка...</div>
-        <div id="username"></div>
-    </div>
+
+<img id="avatar" class="avatar">
+
+<div>
+<div id="name" class="name">Загрузка...</div>
+<div class="sub">Добро пожаловать</div>
 </div>
 
-<div id="content"></div>
+</div>
+
+<div class="actions">
+
+<div class="action glass">💬</div>
+<div class="action glass">📢</div>
+<div class="action glass">⭐️</div>
 
 </div>
+
+<div class="grid">
+
+<div class="card" onclick="openCourse('HSK 1')">
+<img src="https://picsum.photos/400/300?1">
+<div class="title">HSK 1</div>
+</div>
+
+<div class="card" onclick="openCourse('HSK 2')">
+<img src="https://picsum.photos/400/300?2">
+<div class="title">HSK 2</div>
+</div>
+
+<div class="card" onclick="openCourse('HSK 3')">
+<img src="https://picsum.photos/400/300?3">
+<div class="title">HSK 3</div>
+</div>
+
+<div class="card" onclick="openCourse('Бизнес китайский')">
+<img src="https://picsum.photos/400/300?4">
+<div class="title">Бизнес китайский</div>
+</div>
+
+</div>
+
+</div>
+
+<!-- COURSE PAGE -->
+
+<div id="course" class="page">
+
+<h2 id="courseTitle"></h2>
+
+<div class="glass" style="padding:15px;margin-top:15px;">
+Описание курса скоро появится
+</div>
+
+<div class="btn">Купить курс</div>
+
+</div>
+
+<!-- PROFILE -->
+
+<div id="profile" class="page">
+
+<h2>Профиль</h2>
+
+<div class="glass" style="padding:15px;margin-top:10px;">
+Имя: <span id="profileName"></span>
+</div>
+
+</div>
+
+<!-- NAV -->
 
 <div class="nav">
-    <button onclick="showHome()">Главная</button>
-    <button onclick="showCourses()">Курсы</button>
-    <button onclick="showProfile()">Профиль</button>
+
+<div class="active" onclick="showPage('home')">
+<span>🏠</span>Главная
 </div>
 
+<div onclick="showPage('profile')">
+<span>👤</span>Профиль
+</div>
+
+</div>
 
 <script>
 
@@ -108,114 +267,13 @@ tg.expand();
 const user = tg.initDataUnsafe.user || {};
 
 document.getElementById("name").innerText =
-    (user.first_name || "") + " " + (user.last_name || "");
+(user.first_name  "") + " " + (user.last_name  "");
 
-document.getElementById("username").innerText =
-    "@" + (user.username || "");
+document.getElementById("profileName").innerText =
+(user.first_name || "");
 
 if(user.photo_url){
-    document.getElementById("avatar").src = user.photo_url;
+document.getElementById("avatar").src = user.photo_url;
 }
 
-
-function showHome(){
-
-    document.getElementById("content").innerHTML = `
-
-        <div class="card">
-            <b>Добро пожаловать 👋</b><br>
-            Платформа изучения китайского языка
-        </div>
-
-        <div class="card">
-            <b>Мои курсы</b><br>
-            У вас пока нет купленных курсов
-        </div>
-
-        <button class="button" onclick="showCourses()">
-            Перейти в каталог курсов
-        </button>
-
-    `;
-}
-
-
-
-function showCourses(){
-
-    document.getElementById("content").innerHTML = `
-
-        <div class="card" onclick="openCourse('HSK 1')">
-            <b>HSK 1</b><br>Начальный уровень
-        </div>
-
-        <div class="card" onclick="openCourse('HSK 2')">
-            <b>HSK 2</b><br>Базовый уровень
-        </div>
-
-        <div class="card" onclick="openCourse('HSK 3')">
-            <b>HSK 3</b><br>Средний уровень
-        </div>
-
-        <div class="card" onclick="openCourse('HSK 4')">
-            <b>HSK 4</b><br>Выше среднего
-        </div>
-
-        <div class="card" onclick="openCourse('HSK 5')">
-            <b>HSK 5</b><br>Продвинутый
-        </div>
-
-        <div class="card" onclick="openCourse('HSK 6')">
-            <b>HSK 6</b><br>Свободное владение
-        </div>
-
-        <div class="card" onclick="openCourse('Бизнес китайский')">
-            <b>Бизнес китайский</b>
-        </div>
-
-    `;
-}
-
-
-
-function openCourse(name){
-
-    document.getElementById("content").innerHTML = `
-
-        <div class="card">
-            <b>${name}</b><br><br>
-            Описание курса скоро появится
-        </div>
-
-        <button class="button">
-            Купить курс
-        </button>
-
-    `;
-}
-
-
-
-function showProfile(){
-
-    document.getElementById("content").innerHTML = `
-
-        <div class="card">
-            <b>Профиль ученика</b><br><br>
-            Имя: ${user.first_name || ""}
-        </div>
-
-        <button class="button" onclick="tg.close()">
-            Закрыть приложение
-        </button>
-
-    `;
-}
-
-
-showHome();
-
-</script>
-
-</body>
-</html>
+/* PAGE SWITCH */

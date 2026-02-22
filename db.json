@@ -1,0 +1,16 @@
+{
+  "courses": [
+    {
+      "id": 1,
+      "title": "Instagram с нуля",
+      "price": 49,
+      "description": "Полный курс запуска блога"
+    },
+    {
+      "id": 2,
+      "title": "Reels мастер",
+      "price": 59,
+      "description": "Создание вирусных видео"
+    }
+  ]
+}
