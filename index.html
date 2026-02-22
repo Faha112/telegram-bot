@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Chinese School</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+
+body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+    background:#f5f5f7;
+    color:#111;
+}
+
+.container{
+    padding:20px;
+    padding-bottom:80px;
+}
+
+.header{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.avatar{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+}
+
+.name{
+    font-weight:600;
+}
+
+.card{
+    background:white;
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+}
+
+.button{
+    background:black;
+    color:white;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    width:100%;
+    font-size:15px;
+    margin-top:10px;
+}
+
+.nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    background:white;
+    border-top:1px solid #eee;
+    display:flex;
+}
+
+.nav button{
+    flex:1;
+    padding:14px;
+    border:none;
+    background:none;
+    font-size:14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+    <img id="avatar" class="avatar">
+    <div>
+        <div id="name" class="name">Загрузка...</div>
+        <div id="username"></div>
+    </div>
+</div>
+
+<div id="content"></div>
+
+</div>
+
+<div class="nav">
+    <button onclick="showHome()">Главная</button>
+    <button onclick="showCourses()">Курсы</button>
+    <button onclick="showProfile()">Профиль</button>
+</div>
+
+
+<script>
+
+const tg = window.Telegram.WebApp;
+tg.expand();
+
+const user = tg.initDataUnsafe.user || {};
+
+document.getElementById("name").innerText =
+    (user.first_name || "") + " " + (user.last_name || "");
+
+document.getElementById("username").innerText =
+    "@" + (user.username || "");
+
+if(user.photo_url){
+    document.getElementById("avatar").src = user.photo_url;
+}
+
+
+function showHome(){
+
+    document.getElementById("content").innerHTML = `
+
+        <div class="card">
+            <b>Добро пожаловать 👋</b><br>
+            Платформа изучения китайского языка
+        </div>
+
+        <div class="card">
+            <b>Мои курсы</b><br>
+            У вас пока нет купленных курсов
+        </div>
+
+        <button class="button" onclick="showCourses()">
+            Перейти в каталог курсов
+        </button>
+
+    `;
+}
+
+
+
+function showCourses(){
+
+    document.getElementById("content").innerHTML = `
+
+        <div class="card" onclick="openCourse('HSK 1')">
+            <b>HSK 1</b><br>Начальный уровень
+        </div>
+
+        <div class="card" onclick="openCourse('HSK 2')">
+            <b>HSK 2</b><br>Базовый уровень
+        </div>
+
+        <div class="card" onclick="openCourse('HSK 3')">
+            <b>HSK 3</b><br>Средний уровень
+        </div>
+
+        <div class="card" onclick="openCourse('HSK 4')">
+            <b>HSK 4</b><br>Выше среднего
+        </div>
+
+        <div class="card" onclick="openCourse('HSK 5')">
+            <b>HSK 5</b><br>Продвинутый
+        </div>
+
+        <div class="card" onclick="openCourse('HSK 6')">
+            <b>HSK 6</b><br>Свободное владение
+        </div>
+
+        <div class="card" onclick="openCourse('Бизнес китайский')">
+            <b>Бизнес китайский</b>
+        </div>
+
+    `;
+}
+
+
+
+function openCourse(name){
+
+    document.getElementById("content").innerHTML = `
+
+        <div class="card">
+            <b>${name}</b><br><br>
+            Описание курса скоро появится
+        </div>
+
+        <button class="button">
+            Купить курс
+        </button>
+
+    `;
+}
+
+
+
+function showProfile(){
+
+    document.getElementById("content").innerHTML = `
+
+        <div class="card">
+            <b>Профиль ученика</b><br><br>
+            Имя: ${user.first_name || ""}
+        </div>
+
+        <button class="button" onclick="tg.close()">
+            Закрыть приложение
+        </button>
+
+    `;
+}
+
+
+showHome();
+
+</script>
+
+</body>
+</html>
